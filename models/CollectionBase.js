@@ -3,6 +3,8 @@ export class FakeCollection {
     this.name = name;
     this.apiKey = apiKey || process.env.KEY;
     this.baseUrl = process.env.URL_BASE;
+    this.cluster = process.env.CLUSTER;
+    this.database = process.env.DATABASE;
     // Inicializando as opções com valores padrão
     this._resetOptions();
   }
@@ -16,6 +18,14 @@ export class FakeCollection {
       update: {},
     };
     this._operation = "find"; // Operação padrão
+  }
+
+  findByIdAndUpdate(id, update) {
+    return this.updateOne({ _id: { $oid: id } }, update);
+  }
+
+  findById(id) {
+    return this.findOne({ _id: { $oid: id } });
   }
 
   // Método para configurar filtro
@@ -143,8 +153,6 @@ export class FakeCollection {
         filter: this._options.filter,
         update: { ...this._options.update },
       };
-
-      console.log(body);
     } else if (this._operation.startsWith("delete")) {
       if (Object.keys(this._options.filter || {}).length === 0) {
         throw new Error("deleteOne/deleteMany requires a filter object");
@@ -178,8 +186,8 @@ export class FakeCollection {
         "Api-Key": this.apiKey,
       },
       body: JSON.stringify({
-        dataSource: "Cluster0",
-        database: "multiweb",
+        dataSource: this.cluster,
+        database: this.database,
         collection: this.name,
         ...body,
       }),

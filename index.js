@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { ObjectId } from "mongodb";
 import { cupom_logs } from "./models/CuponsLogs.model.js";
 import { leadsUpdate } from "./models/LeadsUpdate.model.js";
@@ -14,9 +15,9 @@ async function query() {
   //   await cupom.save();
   //   leadsUpdate.find().sort({ _id: -1 }).limit(1).exec();
 
-  await cupom_logs.create({
-    codigo: "ribasPromo",
-  });
+  // const cupom = await cupom_logs.findOne({ codigo: "promoRIbas" });
+  // const cupom2 = await cupom_logs.findById(cupom._id);
+  // await cupom_logs.findByIdAndUpdate(cupom._id, { $inc: { count: 1 } });
 }
 
 query();
